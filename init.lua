@@ -3,6 +3,10 @@
 -- disable netrw at the very start of your init.lua (strongly advised)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.go.cmdheight = 0
+vim.o.updatetime = 300
+vim.o.incsearch = false
+vim.wo.signcolumn = 'yes'
 
 -- LEADER
 -- These keybindings need to be defined before the first /
@@ -24,13 +28,17 @@ require('nvim-tree').setup({
     }
 })
 
-require('telescope').setup({
+local telescope = require('telescope')
+
+telescope.setup({
     pickers = {
         find_files = {
             theme = "dropdown"
         }
     }
 })
+
+telescope.load_extension("live_grep_args")
 
 require("onedarkpro").setup({
     highlights = {
@@ -91,24 +99,37 @@ local lsp_status = require('lsp-status')
 lsp_status.register_progress()
 require("mason").setup()
 require("mason-lspconfig").setup()
-require('lspconfig').tailwindcss.setup{}
-require('lspconfig').rust_analyzer.setup({
+
+local lspconfig = require('lspconfig')
+
+lspconfig.tailwindcss.setup{}
+lspconfig.rust_analyzer.setup({
   on_attach = lsp_status.on_attach,
   capabilities = lsp_status.capabilities
 })
+lspconfig.tsserver.setup{
+  on_attach = lsp_status.on_attach,
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+  cmd = { "typescript-language-server", "--stdio" }
+}
 
 local rt = require("rust-tools")
 
 rt.setup({
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
+    server = {
+        on_attach = function(_, bufnr)
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
+    },
+    
 })
+
+rt.inlay_hints.enable()
+
+require('lspsaga').init_lsp_saga()
 
 local cmp = require'cmp'
 cmp.setup({
@@ -158,12 +179,12 @@ cmp.setup({
           }
           item.menu = menu_icon[entry.source.name]
           return item
-      end,
+      end-- Git,
   },
 })
 
 require('nvim-treesitter.configs').setup ({
-  ensure_installed = { "lua", "rust", "toml" },
+  ensure_installed = { "lua", "rust", "toml", "typescript", "tsx", "scss", "html", "json", "yaml", "css" },
   auto_install = true,
   highlight = {
     enable = true,
@@ -177,7 +198,14 @@ require('nvim-treesitter.configs').setup ({
   }
 })
 
-require("trouble").setup()
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
+
+require("trouble").setup({
+    position = "right",
+    auto_open = false
+})
 
 require('Comment').setup()
 
@@ -186,4 +214,6 @@ require('hop').setup()
 -- Barbar
 require('bufferline').setup()
 
+-- Git
+require('vgit').setup()
 

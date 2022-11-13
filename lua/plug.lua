@@ -19,10 +19,15 @@ return require('packer').startup(function(use)
         }
     }
     use 'olimorris/onedarkpro.nvim'
+    
+    -- Fuzzy Finder
 
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = {
+            {'nvim-lua/plenary.nvim'},
+            { "nvim-telescope/telescope-live-grep-args.nvim" },
+        }
     }
 
     use {
@@ -33,6 +38,8 @@ return require('packer').startup(function(use)
     use 'Yggdroot/indentLine'
 
     use 'windwp/nvim-autopairs'
+
+    -- LSP
 
     use {
         "williamboman/mason.nvim",
@@ -57,6 +64,10 @@ return require('packer').startup(function(use)
     use 'hrsh7th/vim-vsnip'
 
     use 'nvim-treesitter/nvim-treesitter'
+    use {
+        "glepnir/lspsaga.nvim",
+        branch = "main"
+    }
 
     use 'puremourning/vimspector' -- graphical debugger
 
@@ -75,5 +86,20 @@ return require('packer').startup(function(use)
         'romgrk/barbar.nvim',
         requires = 'nvim-tree/nvim-web-devicons'
     } 
+
+    -- Git
+
+    use 'tpope/vim-fugitive'
+
+    use {
+      'tanvirtin/vgit.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        }
+    }
+
+    use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
+
+    -- End
 end)
 

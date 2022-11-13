@@ -1,0 +1,17 @@
+jump to file definition: Ctrl ]
+
+hop: <leader>h
+
+nvim-tree: tt
+
+toggle trouble: <leader>xx
+
+lsp details: gh
+lsp definition: gd
+
+# Git
+diffview toggle file: <leader>dvt
+diffview open: dvo
+
+# Comment
+comment a line: gcc (//) or gbc (/* */)
