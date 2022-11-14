@@ -49,7 +49,7 @@ return require('packer').startup(function(use)
         "nvim-lua/lsp-status.nvim"
     }
 
-        -- Completion framework:
+    -- Completion framework:
     use 'hrsh7th/nvim-cmp' 
 
     -- LSP completion source:
@@ -100,6 +100,8 @@ return require('packer').startup(function(use)
 
     use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
+    -- Which Key
+    use 'folke/which-key.nvim'
     -- End
 end)
 

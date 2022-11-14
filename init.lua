@@ -11,7 +11,7 @@ vim.wo.signcolumn = 'yes'
 -- LEADER
 -- These keybindings need to be defined before the first /
 -- is called; otherwise, it will default to "\"
-vim.g.mapleader = ","
+vim.g.mapleader = " "
 vim.g.localleader = "\\"
 
 -- IMPORTS
@@ -20,6 +20,8 @@ require('opts')      -- Options
 require('keys')      -- Keymaps
 require('plug')      -- Plugins
 require('diagnostic')
+require('wk-keys')
+require('terms')
 
 -- PLUGINS
 require('nvim-tree').setup({
@@ -33,7 +35,7 @@ local telescope = require('telescope')
 telescope.setup({
     pickers = {
         find_files = {
-            theme = "dropdown"
+            theme = "dropdown",
         }
     }
 })
@@ -217,3 +219,5 @@ require('bufferline').setup()
 -- Git
 require('vgit').setup()
 
+-- Which Key
+require('which-key').setup {}

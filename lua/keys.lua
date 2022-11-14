@@ -5,11 +5,11 @@ local map = vim.api.nvim_set_keymap
 map('i', 'jk', '<Esc>', {})
 
 -- Toggle nvim-tree
-map('n', 'tt', ':NvimTreeToggle<CR>', {})
+map('n', '<leader>tt', ':NvimTreeToggle<CR>', {})
 
 local builtin = require('telescope.builtin')
-map('n', '<Space>ff', ':Telescope find_files<CR>', {})
-map('n', '<Space>fg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", {})
+-- map('n', '<leader>ff', ':Telescope find_files<CR>', {})
+-- map('n', '<leader>fg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", {})
 
 -- Vimspector
 vim.cmd([[
@@ -151,5 +151,3 @@ map("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true
 
 -- Diffview
 map("n", "<leader>dvt", ":DiffviewToggleFiles<CR>", {})
-map("n", "<leader>dvo", ":DiffviewOpen<CR>", {})
-map("n", "<leader>dvc", ":DiffviewClose<CR>", {})
