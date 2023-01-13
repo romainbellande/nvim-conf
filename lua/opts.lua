@@ -16,7 +16,7 @@ opt.fileencoding = 'utf8'        -- str:  File encoding to use
 -- [[ Theme ]]
 opt.syntax = "ON"                -- str:  Allow syntax highlighting
 opt.termguicolors = true         -- bool: If term supports ui color then enable
-cmd('colorscheme onedarkpro')       -- cmd:  Set the colorscheme
+-- cmd('colorscheme onedarkpro')       -- cmd:  Set the colorscheme
 
 -- [[ Search ]]
 opt.ignorecase = true            -- bool: Ignore case in search patterns
@@ -41,9 +41,9 @@ opt.splitbelow = true            -- bool: Place new window below the current one
 -- noselect: Do not select, force to select one from the menu
 -- shortness: avoid showing extra messages when using completion
 -- updatetime: set updatetime for CursorHold
-opt.completeopt = {'menuone', 'noselect', 'noinsert'}
+opt.completeopt = {'menu', 'menuone', 'noselect'}
 opt.shortmess = opt.shortmess + { c = true}
-vim.api.nvim_set_option('updatetime', 300) 
+opt.updatetime = 100
 
 -- Fixed column for diagnostics to appear
 -- Show autodiagnostic popup on cursor hover_range
