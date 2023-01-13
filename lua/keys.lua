@@ -1,73 +1,91 @@
---[[ keys.lua ]]
 local map = vim.api.nvim_set_keymap
+local wk = require('which-key')
 
--- remap the key used to leave insert mode
-map('i', 'jk', '<Esc>', {})
+wk.register({
+    ["/"] = { "<cmd>CommentToggle<cr>", "Comment" },
+    m = {
+      name = "Mind",
+      o = { "<cmd>MindOpenSmartProject<cr>", "open" },
+      c = { "<cmd>MindClose<cr>", "close" },
+      r = { "<cmd>MindReloadState<cr>", "reload" }
+    },
+    e = { "<cmd>NvimTreeToggle<cr>", "explorer"  },
+    f = {
+        name = "file",
+        f = { "<cmd>Telescope find_files<cr>", "find files" },
+        g = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", "find files with grep"},
+    },
+    g = {
+        name = "git",
+        d = {
+            name = "DiffView",
+            o = { "<cmd>DiffviewOpen<cr>", "open" },
+            c = { "<cmd>DiffviewClose<cr>", "close" },
+        },
+        l = { "<cmd>lua _lazygit_toggle()<cr>", "lazy git" },
+    },
+    h = { "<cmd>HopWord<cr>", "HopWord" },
+    t = {
+        name = "toggle",
+        c = {
+            name = "comment",
+            b = { "<cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<cr>", "block" }
+        },
+        ["1"] = { "<cmd>lua _zsh_simple_toggle()<cr>", "simple terminal" },
+        ["2"] = { "<cmd>lua _zsh_float_toggle()<cr>", "simple floating terminal" },
+    },
+    x = {
+        name = "trouble",
+        x = { "<cmd>TroubleToggle<cr>", "toggle" },
+        q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+        r = { "<cmd>TroubleToggle lsp_references<cr>", "lsp reference" }
+    },
+    s = {
+        name = "search",
+        o = { "<cmd>lua require('spectre').open()<cr>", "open" },
+        w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "word" },
+    },
+    l = {
+        name = "LSP",
+        a = { "<cmd>Lspsaga code_action<cr>", "Code Action" },
+        d = { "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<cr>", "Buffer Diagnostics" },
+        w = { "<cmd>Telescope diagnostics<cr>", "Diagnostics" },
+        F = { "<cmd>Lspsaga lsp_finder<cr>", "finder" },
+        h = { "<cmd>Lspsaga hover_doc<cr>", "documentation" },
+        i = { "<cmd>LspInfo<cr>", "Info" },
+        I = { "<cmd>Mason<cr>", "Mason Info" },
+        j = {
+            vim.diagnostic.goto_next,
+            "Next Diagnostic",
+        },
+        k = {
+            vim.diagnostic.goto_prev,
+            "Prev Diagnostic",
+        },
+        l = { vim.lsp.codelens.run, "CodeLens Action" },
+        p = { "<cmd>Lspsaga peek_definition<cr>", "peek definition" },
+        q = { vim.diagnostic.setloclist, "Quickfix" },
+        r = { vim.lsp.buf.rename, "Rename" },
+        s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
+        S = {
+            "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+            "Workspace Symbols",
+        },
+    }
+}, { prefix = "<leader>", mode = "n" })
 
--- Toggle nvim-tree
-map('n', '<leader>tt', ':NvimTreeToggle<CR>', {})
+wk.register({
+    s = {
+        name = "search",
+        f = { "<cmd>lua require('spectre').open_file_search()<cr>", "search in file" },
+        s = { "<cmd>lua require('spectre').open_visual()<cr>", "search" },
+    }
+}, { prefix = "<leader>", mode = "v" })
 
-local builtin = require('telescope.builtin')
--- map('n', '<leader>ff', ':Telescope find_files<CR>', {})
--- map('n', '<leader>fg', ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", {})
-
--- Vimspector
-vim.cmd([[
-    nmap <F9> <cmd>call vimspector#Launch()<cr>
-    nmap <F5> <cmd>call vimspector#StepOver()<cr>
-    nmap <F8> <cmd>call vimspector#Reset()<cr>
-    nmap <F11> <cmd>call vimspector#StepOver()<cr>")
-    nmap <F12> <cmd>call vimspector#StepOut()<cr>")
-    nmap <F10> <cmd>call vimspector#StepInto()<cr>")
-]])
-map('n', "Db", ":call vimspector#ToggleBreakpoint()<cr>", {})
-map('n', "Dw", ":call vimspector#AddWatch()<cr>", {})
-map('n', "De", ":call vimspector#Evaluate()<cr>", {})
-
--- ToggleTerminal
-
-function _G.set_terminal_keymaps()
-  local opts = {buffer = 0}
-  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-  vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
-  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-end
-
--- if you only want these mappings for toggle term use term://*toggleterm#* instead
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-
--- Trouble
-vim.keymap.set("n", "<Leader>xx", "<cmd>TroubleToggle<cr>",
-  {silent = true, noremap = true}
-)
-vim.keymap.set("n", "<Leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
-  {silent = true, noremap = true}
-)
-vim.keymap.set("n", "<Leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
-  {silent = true, noremap = true}
-)
-vim.keymap.set("n", "<Leader>xl", "<cmd>TroubleToggle loclist<cr>",
-  {silent = true, noremap = true}
-)
-vim.keymap.set("n", "<Leader>xq", "<cmd>TroubleToggle quickfix<cr>",
-  {silent = true, noremap = true}
-)
-vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
-  {silent = true, noremap = true}
-)
-
--- Hop
-
-map('n', '<Leader>h', ':HopWord<CR>', {})
-
--- Barbar
+-- Tabs (Buffer)
 
 local opts = { noremap = true, silent = true }
 
--- Move to previous/next
 map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
 map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
 -- Re-order to previous/next
@@ -88,66 +106,18 @@ map('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
 map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
 -- Close buffer
 map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
--- Wipeout buffer
---                 :BufferWipeout
--- Close commands
---                 :BufferCloseAllButCurrent
---                 :BufferCloseAllButPinned
---                 :BufferCloseAllButCurrentOrPinned
---                 :BufferCloseBuffersLeft
---                 :BufferCloseBuffersRight
--- Magic buffer-picking mode
-map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
--- Sort automatically by...
-map('n', '<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
-map('n', '<Space>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
-map('n', '<Space>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
-map('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
 
--- Other:
--- :BarbarEnable - enables barbar (enabled by default)
--- :BarbarDisable - very bad command, should never be used
+-- Terminal
 
--- Lsp Saga
--- Lsp finder find the symbol definition implement reference
--- if there is no implement it will hide
--- when you use action in finder like open vsplit then you can
--- use <C-t> to jump back
-map("n", "gh", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+function _G.set_terminal_keymaps()
+  local opts = {buffer = 0}
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+end
 
--- Code action
-map("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", { silent = true })
-
--- Rename
-map("n", "gr", "<cmd>Lspsaga rename<CR>", { silent = true })
-
--- Peek Definition
--- you can edit the definition file in this flaotwindow
--- also support open/vsplit/etc operation check definition_action_keys
--- support tagstack C-t jump back
-map("n", "gd", "<cmd>Lspsaga peek_definition<CR>", { silent = true })
-
--- Show line diagnostics
-map("n", "<leader>cd", "<cmd>Lspsaga show_line_diagnostics<CR>", { silent = true })
--- Show cursor diagnostic
-map("n", "<leader>cd", "<cmd>Lspsaga show_cursor_diagnostics<CR>", { silent = true })
-
--- Diagnsotic jump can use `<c-o>` to jump back
-map("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
-map("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
--- Outline
-map("n","<leader>o", "<cmd>LSoutlineToggle<CR>",{ silent = true })
-
--- Hover Doc
-map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
-
--- Float terminal
-map("n", "<A-d>", "<cmd>Lspsaga open_floaterm<CR>", { silent = true })
--- if you want pass somc cli command into terminal you can do like this
--- open lazygit in lspsaga float terminal
-map("n", "<A-d>", "<cmd>Lspsaga open_floaterm lazygit<CR>", { silent = true })
--- close floaterm
-map("t", "<A-d>", [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]], { silent = true })
-
--- Diffview
-map("n", "<leader>dvt", ":DiffviewToggleFiles<CR>", {})
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')

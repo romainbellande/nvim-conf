@@ -18,8 +18,8 @@ return require('packer').startup(function(use)
             'nvim-tree/nvim-web-devicons', opt = true
         }
     }
-    use 'olimorris/onedarkpro.nvim'
-    
+    use 'navarasu/onedark.nvim'
+
     -- Fuzzy Finder
 
     use {
@@ -46,11 +46,14 @@ return require('packer').startup(function(use)
         "williamboman/mason-lspconfig.nvim",
         "neovim/nvim-lspconfig",
         "simrat39/rust-tools.nvim",
-        "nvim-lua/lsp-status.nvim"
+        "nvim-lua/lsp-status.nvim",
+        "onsails/lspkind.nvim"
     }
 
     -- Completion framework:
     use 'hrsh7th/nvim-cmp' 
+
+    use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
 
     -- LSP completion source:
     use 'hrsh7th/cmp-nvim-lsp'
@@ -102,6 +105,32 @@ return require('packer').startup(function(use)
 
     -- Which Key
     use 'folke/which-key.nvim'
+
+    -- find and replace rust-tools
+    use {
+        'windwp/nvim-spectre',
+        requires = {
+            'nvim-lua/plenary.nvim'
+        }
+    }
+
+    use	{
+		"phaazon/mind.nvim",
+		branch = "v2.2",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			require("mind").setup()
+		end,
+	}
+
+	use "stevearc/dressing.nvim"
+
+    use {
+        "terrortylor/nvim-comment", -- Toggle Comments
+        config = function()
+            require('nvim_comment').setup()
+        end
+    }
     -- End
 end)
 
