@@ -66,9 +66,27 @@ return {
     },
     'j-hui/fidget.nvim',
     {
-       'phaazon/hop.nvim',
-       config = function ()
-          require('hop').setup();
-       end
+        'phaazon/hop.nvim',
+        config = function()
+            require('hop').setup();
+        end
+    },
+    {
+        "windwp/nvim-autopairs",
+        config = function()
+            require("nvim-autopairs").setup {}
+        end
+    },
+    'Pocco81/true-zen.nvim',
+    {
+        'cappyzawa/trim.nvim',
+        config = function()
+            require('trim').setup({
+                trim_last_line = false,
+                patterns = {
+                    [[%s/\(\n\n\)\n\+/\1/]], -- replace multiple blank lines with a single line
+                },
+            })
+        end
     }
 };

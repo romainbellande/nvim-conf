@@ -8,8 +8,6 @@ vim.o.updatetime = 300
 vim.o.incsearch = false
 vim.wo.signcolumn = 'yes'
 
-
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -36,3 +34,4 @@ require("lazy").setup('plugins');
 require('keys');
 require('opts');
 require('diagnostic');
+

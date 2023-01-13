@@ -3,22 +3,25 @@ local map = vim.api.nvim_set_keymap;
 
 wk.register({
     ["/"] = { "<Plug>(comment_toggle_linewise_visual)", "Comment" },
+    z = {
+        name = "zen",
+        n = { ":'<,'>TZNarrow<cr>", "narrow" },
+    }
 }, { prefix = "<leader>", mode = "v" })
 
 wk.register({
     ["/"] = { "<Plug>(comment_toggle_linewise_current)", "Comment" },
     e = { "<cmd>NvimTreeToggle<cr>", "explorer" },
-    x = {
-        name = "trouble",
-        x = { "<cmd>TroubleToggle<cr>", "toggle" },
-        q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
-        r = { "<cmd>TroubleToggle lsp_references<cr>", "lsp reference" }
-    },
     f = {
         name = "file",
         f = { "<cmd>Telescope find_files<cr>", "find files" },
         g = { "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<cr>", "find files with grep" },
     },
+    g = {
+        name = "git",
+        l = { "<cmd>LazyGit<cr>", "lazy git" }
+    },
+    h = { "<cmd>HopWord<cr>", "HopWord" },
     l = {
         name = "LSP",
         f = { vim.lsp.buf.format, "Format" },
@@ -47,9 +50,24 @@ wk.register({
             "Workspace Symbols",
         },
     },
-    g = {
-        name = "git",
-        l = { "<cmd>LazyGit<cr>", "lazy git" }
+    m = {
+        name = "Mind",
+        o = { "<cmd>MindOpenSmartProject<cr>", "open" },
+        c = { "<cmd>MindClose<cr>", "close" },
+        r = { "<cmd>MindReloadState<cr>", "reload" }
+    },
+    x = {
+        name = "trouble",
+        x = { "<cmd>TroubleToggle<cr>", "toggle" },
+        q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+        r = { "<cmd>TroubleToggle lsp_references<cr>", "lsp reference" }
+    },
+    z = {
+        name = "zen",
+        n = { "<cmd>TZNarrow<cr>", "narrow" },
+        f = { "<cmd>TZFocus<cr>", "focus" },
+        m = { "<cmd>TZMinimalist<cr>", "minimalist" },
+        a = { "<cmd>TZAtaraxis<cr>", "ataraxis" },
     }
 }, { prefix = "<leader>", mode = "n" })
 
