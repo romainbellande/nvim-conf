@@ -19,7 +19,12 @@ wk.register({
     },
     g = {
         name = "git",
-        l = { "<cmd>LazyGit<cr>", "lazy git" }
+        l = { "<cmd>LazyGit<cr>", "lazy git" },
+        d = {
+            name = "DiffView",
+            o = { "<cmd>DiffviewOpen<cr>", "open" },
+            c = { "<cmd>DiffviewClose<cr>", "close" },
+        },
     },
     h = { "<cmd>HopWord<cr>", "HopWord" },
     l = {

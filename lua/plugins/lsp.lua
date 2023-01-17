@@ -13,8 +13,56 @@ return {
         },
         config = function()
             require("mason-lspconfig").setup({
-                automatic_installation = true
+                automatic_installation = false
             })
+        end
+    },
+    {
+        'simrat39/rust-tools.nvim',
+        config = function()
+            local capabilities = require('cmp_nvim_lsp').default_capabilities();
+            local rt = require("rust-tools");
+            local on_attach = function(client)
+            end
+
+            rt.setup({
+                tools = {
+                    runnables = {
+                        use_telescope = true,
+                    },
+                    inlay_hints = {
+                        auto = true,
+                        show_parameter_hints = false,
+                        parameter_hints_prefix = "",
+                        other_hints_prefix = "",
+                    },
+                },
+                server = {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    settings = {
+                        ["rust-analyzer"] = {
+                            checkOnSave = {
+                                command = "clippy",
+                            },
+                            imports = {
+                                granularity = {
+                                    group = "module",
+                                },
+                                prefix = "self",
+                            },
+                            cargo = {
+                                buildScripts = {
+                                    enable = true,
+                                },
+                            },
+                            procMacro = {
+                                enable = true
+                            },
+                        }
+                    }
+                }
+            });
         end
     },
     {
@@ -23,13 +71,12 @@ return {
             local lspconfig = require('lspconfig');
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-
-            lspconfig.rust_analyzer.setup({
-                capabilities = capabilities,
-                settings = {
-                    ["rust-analyzer"] = {}
-                },
-            })
+            -- lspconfig.rust_analyzer.setup({
+            --     capabilities = capabilities,
+            --     settings = {
+            --         ["rust-analyzer"] = {}
+            --     },
+            -- })
 
             lspconfig.tailwindcss.setup({
                 capabilities = capabilities,
@@ -76,11 +123,11 @@ return {
         end
     },
     {
-		"phaazon/mind.nvim",
-		branch = "v2.2",
-		dependencies = "nvim-lua/plenary.nvim",
-		config = function()
-			require("mind").setup()
-		end,
-	}
+        "phaazon/mind.nvim",
+        branch = "v2.2",
+        dependencies = "nvim-lua/plenary.nvim",
+        config = function()
+            require("mind").setup()
+        end,
+    }
 };

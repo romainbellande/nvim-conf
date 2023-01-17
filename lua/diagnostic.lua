@@ -1,4 +1,4 @@
--- LSP Diagnostics Options Setup 
+-- LSP Diagnostics Options Setup
 local sign = function(opts)
   vim.fn.sign_define(opts.name, {
     texthl = opts.name,
@@ -26,7 +26,16 @@ vim.diagnostic.config({
     },
 })
 
-vim.cmd([[
-    set signcolumn=yes
-    autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
+-- Show diagnostic popup on cursor hover
+local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+   vim.diagnostic.open_float(nil, { focusable = false })
+  end,
+  group = diag_float_grp,
+})
+
+-- have a fixed column for the diagnostics to appear in
+-- this removes the jitter when warnings/errors flow in
+vim.wo.signcolumn = "yes"
+

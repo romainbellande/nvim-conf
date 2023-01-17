@@ -7,5 +7,9 @@ return {
         config = function()
             require('git-conflict').setup()
         end
+    },
+    {
+        'sindrets/diffview.nvim',
+        dependencies = 'nvim-lua/plenary.nvim'
     }
 };
